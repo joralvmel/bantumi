@@ -18,11 +18,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 
 import es.upm.miw.bantumi.ui.fragmentos.FinalAlertDialog;
 import es.upm.miw.bantumi.R;
 import es.upm.miw.bantumi.dominio.logica.JuegoBantumi;
+import es.upm.miw.bantumi.ui.fragmentos.RebootAlertDialog;
 import es.upm.miw.bantumi.ui.viewmodel.BantumiViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     public JuegoBantumi juegoBantumi;
     private BantumiViewModel bantumiVM;
     int numInicialSemillas;
+    boolean changed = false;
+    boolean began = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onChanged(Integer integer) {
                             mostrarValor(finalI, juegoBantumi.getSemillas(finalI));
+                            if(began) changed = true;
                         }
                     });
         }
@@ -72,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onChanged(JuegoBantumi.Turno turno) {
                         marcarTurno(juegoBantumi.turnoActual());
+                        if(!began) began = true;
                     }
                 }
         );
@@ -141,6 +149,10 @@ public class MainActivity extends AppCompatActivity {
 
             // @TODO!!! resto opciones
 
+            case R.id.opcReiniciarPartida:
+                reiniciarPartida();
+                return true;
+
             default:
                 Snackbar.make(
                         findViewById(android.R.id.content),
@@ -149,6 +161,25 @@ public class MainActivity extends AppCompatActivity {
                 ).show();
         }
         return true;
+    }
+
+    private void reiniciarPartida() {
+        RebootAlertDialog.Back callBack = () -> {
+            changed = false;
+            began = false;
+            bantumiVM.clear();
+            juegoBantumi.clear(JuegoBantumi.Turno.turnoJ1);
+            crearObservadores();
+        };
+        if (changed) {
+            new RebootAlertDialog(
+                    R.string.txtDialogoReiniciarTitulo,
+                    R.string.txtDialogoReiniciarPregunta,
+                    callBack
+            ).show(getSupportFragmentManager(),"DIALOGO_REINICIAR");
+        } else {
+            callBack.onSuccess();
+        }
     }
 
     /**

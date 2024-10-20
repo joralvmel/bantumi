@@ -23,6 +23,14 @@ public class BantumiViewModel extends ViewModel {
         }
     }
 
+    public void clear() {
+        turno = new MutableLiveData<>(JuegoBantumi.Turno.turnoJ1);
+        tablero = new ArrayList<>(JuegoBantumi.NUM_POSICIONES);
+        for (int i = 0; i < JuegoBantumi.NUM_POSICIONES; i++) {
+            tablero.add(i, new MutableLiveData<>(0));
+        }
+    }
+
     /**
      * @return Devuelve el turno actual
      */

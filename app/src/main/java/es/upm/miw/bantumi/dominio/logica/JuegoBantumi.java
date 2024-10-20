@@ -37,6 +37,12 @@ public class JuegoBantumi {
         }
     }
 
+    public void clear(Turno turno) {
+        if (campoVacio(Turno.turnoJ1) && campoVacio(Turno.turnoJ2)) {
+            inicializar(turno);
+        }
+    }
+
     /**
      * @param pos posición
      * @return Número de semillas en el hueco <i>pos</i>
