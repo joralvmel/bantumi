@@ -153,6 +153,10 @@ public class MainActivity extends AppCompatActivity {
                 reiniciarPartida();
                 return true;
 
+            case R.id.opcGuardarPartida:
+                guardarPartida();
+                return true;
+
             default:
                 Snackbar.make(
                         findViewById(android.R.id.content),
@@ -179,6 +183,31 @@ public class MainActivity extends AppCompatActivity {
             ).show(getSupportFragmentManager(),"DIALOGO_REINICIAR");
         } else {
             callBack.onSuccess();
+        }
+    }
+
+    private void guardarPartida() {
+        String fileName = "bantumi_save.txt";
+        String gameState = juegoBantumi.serializa();
+
+        try (FileOutputStream fos = openFileOutput(fileName, MODE_PRIVATE)) {
+            fos.write(gameState.getBytes());
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    getString(R.string.txtGuardarTitulo),
+                    Snackbar.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            Log.e(LOG_TAG, getString(R.string.txtErrorNotFound), e);
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    getString(R.string.txtErrorGuardar),
+                    Snackbar.LENGTH_LONG).show();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, getString(R.string.txtErrorIO), e);
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    getString(R.string.txtErrorGuardar),
+                    Snackbar.LENGTH_LONG).show();
         }
     }
 

@@ -53,6 +53,11 @@
     <string name="txtOpcionDialogoSi">Si</string>
     <string name="txtOpcionDialogoNo">No</string>
 
+    <!-- Diálogo de opcion guardar -->
+    <string name="txtGuardarTitulo">Partida Guardada</string>
+    <string name="txtErrorNotFound">Archivo no encontrado</string>
+    <string name="txtErrorIO">Error de Entrada/Salida</string>
+    <string name="txtErrorGuardar">Error al guardar la partida</string>
 
 
 </resources>

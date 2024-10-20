@@ -211,7 +211,12 @@ public class JuegoBantumi {
      */
     public String serializa() {
         // @TODO
-        return null;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < NUM_POSICIONES; i++) {
+            sb.append(getSemillas(i)).append(",");
+        }
+        sb.append(turnoActual().name());
+        return sb.toString();
     }
 
     /**
