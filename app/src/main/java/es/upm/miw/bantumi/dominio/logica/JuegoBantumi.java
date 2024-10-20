@@ -226,5 +226,12 @@ public class JuegoBantumi {
      */
     public void deserializa(String juegoSerializado) {
         // @TODO
+        String[] parts = juegoSerializado.split(",");
+        for (int i = 0; i < NUM_POSICIONES; i++) {
+            int semillas = Integer.parseInt(parts[i]);
+            setSemillas(i, semillas);
+        }
+        JuegoBantumi.Turno turno = JuegoBantumi.Turno.valueOf(parts[NUM_POSICIONES]);
+        setTurno(turno);
     }
 }

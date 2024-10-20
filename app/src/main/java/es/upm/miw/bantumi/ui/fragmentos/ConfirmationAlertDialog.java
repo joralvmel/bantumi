@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import es.upm.miw.bantumi.R;
 import es.upm.miw.bantumi.ui.actividades.MainActivity;
 
-public class RebootAlertDialog extends AppCompatDialogFragment {
+public class ConfirmationAlertDialog extends AppCompatDialogFragment {
     public interface Back {
         void onSuccess();
     }
@@ -19,7 +19,7 @@ public class RebootAlertDialog extends AppCompatDialogFragment {
     int message;
     Back back;
 
-    public RebootAlertDialog(int title, int message, Back back) {
+    public ConfirmationAlertDialog(int title, int message, Back back) {
         this.title = title;
         this.message = message;
         this.back = back;

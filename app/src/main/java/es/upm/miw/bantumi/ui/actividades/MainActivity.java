@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.util.Locale;
 import es.upm.miw.bantumi.ui.fragmentos.FinalAlertDialog;
 import es.upm.miw.bantumi.R;
 import es.upm.miw.bantumi.dominio.logica.JuegoBantumi;
-import es.upm.miw.bantumi.ui.fragmentos.RebootAlertDialog;
+import es.upm.miw.bantumi.ui.fragmentos.ConfirmationAlertDialog;
 import es.upm.miw.bantumi.ui.viewmodel.BantumiViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -157,6 +158,10 @@ public class MainActivity extends AppCompatActivity {
                 guardarPartida();
                 return true;
 
+            case R.id.opcRecuperarPartida:
+                recuperarPartida();
+                return true;
+
             default:
                 Snackbar.make(
                         findViewById(android.R.id.content),
@@ -168,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void reiniciarPartida() {
-        RebootAlertDialog.Back callBack = () -> {
+        ConfirmationAlertDialog.Back callBack = () -> {
             changed = false;
             began = false;
             bantumiVM.clear();
@@ -176,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
             crearObservadores();
         };
         if (changed) {
-            new RebootAlertDialog(
+            new ConfirmationAlertDialog(
                     R.string.txtDialogoReiniciarTitulo,
                     R.string.txtDialogoReiniciarPregunta,
                     callBack
@@ -208,6 +213,45 @@ public class MainActivity extends AppCompatActivity {
                     findViewById(android.R.id.content),
                     getString(R.string.txtErrorGuardar),
                     Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private void recuperarPartida() {
+        ConfirmationAlertDialog.Back callBack = () -> {
+            String fileName = "bantumi_save.txt";
+            try (FileInputStream fis = openFileInput(fileName)) {
+                byte[] data = new byte[fis.available()];
+                fis.read(data);
+                String gameState = new String(data);
+                juegoBantumi.deserializa(gameState);
+                crearObservadores();
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        getString(R.string.txtRecuperarTitulo),
+                        Snackbar.LENGTH_LONG).show();
+            } catch (FileNotFoundException e) {
+                Log.e(LOG_TAG, getString(R.string.txtErrorNotFound), e);
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        getString(R.string.txtErrorRecuperar),
+                        Snackbar.LENGTH_LONG).show();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, getString(R.string.txtErrorIO), e);
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        getString(R.string.txtErrorRecuperar),
+                        Snackbar.LENGTH_LONG).show();
+            }
+        };
+
+        if (changed) {
+            new ConfirmationAlertDialog(
+                    R.string.txtDialogoRecuperarTitulo,
+                    R.string.txtDialogoRecuperarPregunta,
+                    callBack
+            ).show(getSupportFragmentManager(), "DIALOGO_RECUPERAR");
+        } else {
+            callBack.onSuccess();
         }
     }
 
