@@ -37,10 +37,15 @@ public class JuegoBantumi {
         }
     }
 
-    public void clear(Turno turno) {
-        if (campoVacio(Turno.turnoJ1) && campoVacio(Turno.turnoJ2)) {
-            inicializar(turno);
+    public void clear(Turno turno, int numInicialSemillas) {
+        for (int i = 0; i < NUM_POSICIONES; i++) {
+            if (i != 6 && i != 13) { // Excluir los depósitos
+                setSemillas(i, numInicialSemillas);
+            } else {
+                setSemillas(i, 0); // Los depósitos empiezan vacíos
+            }
         }
+        setTurno(turno);
     }
 
     /**

@@ -58,8 +58,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Leer la preferencia de semillas iniciales
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int numInicialSemillas = Integer.parseInt(sharedPreferences.getString("initial_number_of_seeds", "4"));
+
         // Instancia el ViewModel y el juego, y asigna observadores a los huecos
-        numInicialSemillas = getResources().getInteger(R.integer.intNumInicialSemillas);
         bantumiVM = new ViewModelProvider(this).get(BantumiViewModel.class);
         juegoBantumi = new JuegoBantumi(bantumiVM, JuegoBantumi.Turno.turnoJ1, numInicialSemillas);
         crearObservadores();
@@ -189,7 +192,11 @@ public class MainActivity extends AppCompatActivity {
             changed = false;
             began = false;
             bantumiVM.clear();
-            juegoBantumi.clear(JuegoBantumi.Turno.turnoJ1);
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            int numInicialSemillas = Integer.parseInt(sharedPreferences.getString("initial_number_of_seeds", "4"));
+
+            juegoBantumi.clear(JuegoBantumi.Turno.turnoJ1, numInicialSemillas);
             crearObservadores();
         };
         if (changed) {

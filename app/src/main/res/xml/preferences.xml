@@ -12,7 +12,12 @@
 
     <PreferenceCategory
         android:title="@string/prefTituloCategoria2">
-        <!-- Otros ajustes del juego -->
+        <EditTextPreference
+            android:key="initial_number_of_seeds"
+            android:title="Numero inicial de semillas"
+            android:summary="Cambia el numero de semillas en cada hueco"
+            android:inputType="number"
+            android:defaultValue="4" />
     </PreferenceCategory>
 
     <PreferenceCategory
