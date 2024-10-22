@@ -1,7 +1,11 @@
 package es.upm.miw.bantumi.ui.actividades;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +26,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
+import es.upm.miw.bantumi.dominio.logica.ScoreDatabaseHelper;
 import es.upm.miw.bantumi.ui.fragmentos.FinalAlertDialog;
 import es.upm.miw.bantumi.R;
 import es.upm.miw.bantumi.dominio.logica.JuegoBantumi;
@@ -281,6 +288,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void guardarPuntuacion() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String playerName = prefs.getString("player_name", "Unknown Player");
+
+        int seedsPlayer1 = juegoBantumi.getSemillas(6);
+        int seedsPlayer2 = juegoBantumi.getSemillas(13);
+
+        String dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        ScoreDatabaseHelper dbHelper = new ScoreDatabaseHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ScoreDatabaseHelper.COLUMN_PLAYER_NAME, playerName);
+        values.put(ScoreDatabaseHelper.COLUMN_DATE_TIME, dateTime);
+        values.put(ScoreDatabaseHelper.COLUMN_SEEDS_PLAYER1, seedsPlayer1);
+        values.put(ScoreDatabaseHelper.COLUMN_SEEDS_PLAYER2, seedsPlayer2);
+
+        db.insert(ScoreDatabaseHelper.TABLE_SCORES, null, values);
+        db.close();
+    }
+
     /**
      * El juego ha terminado. Volver a jugar?
      */
@@ -293,6 +322,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // @TODO guardar puntuación
+        guardarPuntuacion();
 
         // terminar
         new FinalAlertDialog(texto).show(getSupportFragmentManager(), "ALERT_DIALOG");
