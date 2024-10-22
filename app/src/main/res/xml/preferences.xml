@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/prefTituloCategoria1">
+        <EditTextPreference
+            android:key="player_name"
+            android:title="@string/prefTituloNombreJugador"
+            android:summary="@string/prefTextoNombreJugador"
+            android:inputType="text" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/prefTituloCategoria2">
+        <!-- Otros ajustes del juego -->
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/prefTituloCategoria3">
+        <!-- Más información -->
+    </PreferenceCategory>
+
+</PreferenceScreen>
