@@ -3,6 +3,8 @@ package es.upm.miw.bantumi.ui.actividades;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,6 +29,9 @@ public class BestScoresActivity extends AppCompatActivity {
         dbHelper = new ScoreDatabaseHelper(this);
 
         loadBestScores();
+
+        Button buttonDeleteAllScores = findViewById(R.id.buttonDeleteAllScores);
+        buttonDeleteAllScores.setOnClickListener(v -> showDeleteConfirmationDialog());
     }
 
     private void loadBestScores() {
@@ -62,5 +67,21 @@ public class BestScoresActivity extends AppCompatActivity {
             tableLayout.addView(row);
         }
         cursor.close();
+    }
+
+    private void showDeleteConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.txtDialogoEliminarResultadosTitulo)
+                .setMessage(R.string.txtDialogoEliminarResultadosPregunta)
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> deleteAllScores())
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+    }
+
+    private void deleteAllScores() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(ScoreDatabaseHelper.TABLE_SCORES, null, null);
+        tableLayout.removeViews(1, tableLayout.getChildCount() - 1);
+        loadBestScores();
     }
 }

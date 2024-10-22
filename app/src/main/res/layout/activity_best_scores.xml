@@ -13,19 +13,25 @@
 
         <TableRow>
             <TextView
-                android:text="Player Name"
+                android:text="@string/txtMejoresResultadosJugador"
                 android:padding="8dp"
                 android:textStyle="bold" />
             <TextView
-                android:text="Max Seeds"
+                android:text="@string/txtMejoresResultadosPuntuacion"
                 android:padding="8dp"
                 android:textStyle="bold"
                 android:gravity="center" />
             <TextView
-                android:text="Date Time"
+                android:text="@string/txtMejoresResultadosFecha"
                 android:padding="8dp"
                 android:textStyle="bold" />
         </TableRow>
     </TableLayout>
+
+    <Button
+        android:id="@+id/buttonDeleteAllScores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txtDialogoEliminarResultadosBoton" />
 
 </LinearLayout>

@@ -65,5 +65,15 @@
     <string name="txtDialogoRecuperarTitulo">Recuperar Partida</string>
     <string name="txtDialogoRecuperarPregunta">¿Estás seguro de que deseas recuperar la partida guardada?</string>
 
+    <!-- Tabla de mejores resultados -->
+    <string name="txtMejoresResultadosTitulo">Mejores Resultados</string>
+    <string name="txtMejoresResultadosJugador">Jugador</string>
+    <string name="txtMejoresResultadosFecha">Fecha</string>
+    <string name="txtMejoresResultadosPuntuacion">Puntuación</string>
+    <string name="txtDialogoEliminarResultadosBoton">Borrar todos los resultados</string>
+
+    <!-- Diálogo de opcion eliminar mejores resultados -->
+    <string name="txtDialogoEliminarResultadosTitulo">Borrar todos los resultados</string>
+    <string name="txtDialogoEliminarResultadosPregunta">Estas seguro que deseas eliminar todos los resultados?</string>
 
 </resources>
