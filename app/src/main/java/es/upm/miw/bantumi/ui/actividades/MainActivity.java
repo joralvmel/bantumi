@@ -158,6 +158,10 @@ public class MainActivity extends AppCompatActivity {
 
             // @TODO!!! resto opciones
 
+            case R.id.opcMejoresResultados:
+                startActivity(new Intent(this, BestScoresActivity.class));
+                return true;
+
             case R.id.opcReiniciarPartida:
                 reiniciarPartida();
                 return true;
