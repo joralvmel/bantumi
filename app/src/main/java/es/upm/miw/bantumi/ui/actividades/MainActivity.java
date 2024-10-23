@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void guardarPuntuacion() {
+    private void guardarPuntuacion(String elapsedTime) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String playerName = prefs.getString("player_name", "Unknown Player");
 
@@ -334,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
         values.put(ScoreDatabaseHelper.COLUMN_DATE_TIME, dateTime);
         values.put(ScoreDatabaseHelper.COLUMN_SEEDS_PLAYER1, seedsPlayer1);
         values.put(ScoreDatabaseHelper.COLUMN_SEEDS_PLAYER2, seedsPlayer2);
+        values.put(ScoreDatabaseHelper.COLUMN_ELAPSED_TIME, elapsedTime);
 
         db.insert(ScoreDatabaseHelper.TABLE_SCORES, null, values);
         db.close();
@@ -345,6 +346,11 @@ public class MainActivity extends AppCompatActivity {
     private void finJuego() {
         Chronometer chronometer = findViewById(R.id.chronometer);
         chronometer.stop();
+        long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
+        int minutes = (int) (elapsedMillis / 60000);
+        int seconds = (int) (elapsedMillis % 60000 / 1000);
+        String elapsedTime = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+
         String texto = (juegoBantumi.getSemillas(6) > 6 * numInicialSemillas)
                 ? "Gana Jugador 1"
                 : "Gana Jugador 2";
@@ -352,10 +358,10 @@ public class MainActivity extends AppCompatActivity {
             texto = "¡¡¡ EMPATE !!!";
         }
 
-        // @TODO guardar puntuación
-        guardarPuntuacion();
+        // Guardar puntuación con el tiempo transcurrido
+        guardarPuntuacion(elapsedTime);
 
-        // terminar
+        // Terminar
         new FinalAlertDialog(texto, () -> {
             // Reset the chronometer for the next game
             chronometer.setBase(SystemClock.elapsedRealtime());

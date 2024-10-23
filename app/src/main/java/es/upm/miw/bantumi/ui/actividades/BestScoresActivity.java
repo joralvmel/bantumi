@@ -36,7 +36,7 @@ public class BestScoresActivity extends AppCompatActivity {
     private void loadBestScores() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT player_name, seeds_player1, seeds_player2, date_time, " +
+        String query = "SELECT player_name, seeds_player1, seeds_player2, date_time, elapsed_time, " +
                 "CASE WHEN seeds_player1 > seeds_player2 THEN seeds_player1 ELSE seeds_player2 END AS max_seeds " +
                 "FROM scores " +
                 "ORDER BY max_seeds DESC " +
@@ -48,20 +48,27 @@ public class BestScoresActivity extends AppCompatActivity {
             String playerName = cursor.getString(cursor.getColumnIndexOrThrow("player_name"));
             int maxSeeds = cursor.getInt(cursor.getColumnIndexOrThrow("max_seeds"));
             String dateTime = cursor.getString(cursor.getColumnIndexOrThrow("date_time"));
+            String elapsedTime = cursor.getString(cursor.getColumnIndexOrThrow("elapsed_time"));
 
             TableRow row = new TableRow(this);
             TextView playerNameView = new TextView(this);
             TextView maxSeedsView = new TextView(this);
             TextView dateTimeView = new TextView(this);
+            TextView elapsedTimeView = new TextView(this);
 
             playerNameView.setText(playerName);
+            playerNameView.setGravity(android.view.Gravity.CENTER);
             maxSeedsView.setText(String.valueOf(maxSeeds));
             maxSeedsView.setGravity(android.view.Gravity.CENTER);
             dateTimeView.setText(dateTime);
+            dateTimeView.setGravity(android.view.Gravity.CENTER);
+            elapsedTimeView.setText(elapsedTime);
+            elapsedTimeView.setGravity(android.view.Gravity.CENTER);
 
             row.addView(playerNameView);
             row.addView(maxSeedsView);
             row.addView(dateTimeView);
+            row.addView(elapsedTimeView);
 
             tableLayout.addView(row);
         }

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,27 +10,36 @@
         android:layout_height="wrap_content"
         android:stretchColumns="1">
 
+        <!-- Table header -->
         <TableRow>
             <TextView
-                android:text="@string/txtMejoresResultadosJugador"
-                android:padding="8dp"
-                android:textStyle="bold" />
-            <TextView
-                android:text="@string/txtMejoresResultadosPuntuacion"
+                android:text="Player"
                 android:padding="8dp"
                 android:textStyle="bold"
                 android:gravity="center" />
             <TextView
-                android:text="@string/txtMejoresResultadosFecha"
+                android:text="Max Seeds"
                 android:padding="8dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:gravity="center" />
+            <TextView
+                android:text="Date"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:gravity="center" />
+            <TextView
+                android:text="Game Duration"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:gravity="center" />
         </TableRow>
     </TableLayout>
 
     <Button
         android:id="@+id/buttonDeleteAllScores"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txtDialogoEliminarResultadosBoton" />
+        android:text="Delete All Scores"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

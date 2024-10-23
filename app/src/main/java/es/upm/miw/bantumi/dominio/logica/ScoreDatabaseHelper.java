@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ScoreDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "bantumi.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Incremented version
 
     public static final String TABLE_SCORES = "scores";
     public static final String COLUMN_ID = "_id";
@@ -14,6 +14,7 @@ public class ScoreDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DATE_TIME = "date_time";
     public static final String COLUMN_SEEDS_PLAYER1 = "seeds_player1";
     public static final String COLUMN_SEEDS_PLAYER2 = "seeds_player2";
+    public static final String COLUMN_ELAPSED_TIME = "elapsed_time";
 
     private static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE_SCORES + " (" +
@@ -21,7 +22,8 @@ public class ScoreDatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_PLAYER_NAME + " TEXT, " +
                     COLUMN_DATE_TIME + " TEXT, " +
                     COLUMN_SEEDS_PLAYER1 + " INTEGER, " +
-                    COLUMN_SEEDS_PLAYER2 + " INTEGER);";
+                    COLUMN_SEEDS_PLAYER2 + " INTEGER, " +
+                    COLUMN_ELAPSED_TIME + " TEXT);";
 
     public ScoreDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,7 +36,8 @@ public class ScoreDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCORES);
-        onCreate(db);
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE " + TABLE_SCORES + " ADD COLUMN " + COLUMN_ELAPSED_TIME + " TEXT;");
+        }
     }
 }
