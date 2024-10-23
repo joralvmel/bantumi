@@ -65,31 +65,37 @@
                     <Button
                         android:id="@+id/casilla_12"
                         style="@style/BantumiButton"
+                        android:onClick="huecoPulsado"
                         android:clickable="false" />
 
                     <Button
                         android:id="@+id/casilla_11"
                         style="@style/BantumiButton"
+                        android:onClick="huecoPulsado"
                         android:clickable="false" />
 
                     <Button
                         android:id="@+id/casilla_10"
                         style="@style/BantumiButton"
+                        android:onClick="huecoPulsado"
                         android:clickable="false" />
 
                     <Button
                         android:id="@+id/casilla_09"
                         style="@style/BantumiButton"
+                        android:onClick="huecoPulsado"
                         android:clickable="false" />
 
                     <Button
                         android:id="@+id/casilla_08"
                         style="@style/BantumiButton"
+                        android:onClick="huecoPulsado"
                         android:clickable="false" />
 
                     <Button
                         android:id="@+id/casilla_07"
                         style="@style/BantumiButton"
+                        android:onClick="huecoPulsado"
                         android:clickable="false" />
 
                 </LinearLayout>
@@ -102,27 +108,33 @@
 
                     <Button
                         android:id="@+id/casilla_00"
-                        style="@style/BantumiButton" />
+                        style="@style/BantumiButton"
+                        android:onClick="huecoPulsado" />
 
                     <Button
                         android:id="@+id/casilla_01"
-                        style="@style/BantumiButton" />
+                        style="@style/BantumiButton"
+                        android:onClick="huecoPulsado" />
 
                     <Button
                         android:id="@+id/casilla_02"
-                        style="@style/BantumiButton" />
+                        style="@style/BantumiButton"
+                        android:onClick="huecoPulsado" />
 
                     <Button
                         android:id="@+id/casilla_03"
-                        style="@style/BantumiButton" />
+                        style="@style/BantumiButton"
+                        android:onClick="huecoPulsado" />
 
                     <Button
                         android:id="@+id/casilla_04"
-                        style="@style/BantumiButton" />
+                        style="@style/BantumiButton"
+                        android:onClick="huecoPulsado" />
 
                     <Button
                         android:id="@+id/casilla_05"
-                        style="@style/BantumiButton" />
+                        style="@style/BantumiButton"
+                        android:onClick="huecoPulsado" />
 
                 </LinearLayout>
 
