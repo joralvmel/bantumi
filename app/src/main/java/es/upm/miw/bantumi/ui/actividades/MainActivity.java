@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +53,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Chronometer chronometer = findViewById(R.id.chronometer);
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.setOnChronometerTickListener(chronometer1 -> {
+            long elapsedMillis = SystemClock.elapsedRealtime() - chronometer1.getBase();
+            int minutes = (int) (elapsedMillis / 60000);
+            int seconds = (int) (elapsedMillis % 60000 / 1000);
+            chronometer1.setText(String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds));
+        });
+        chronometer.start();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -193,6 +205,11 @@ public class MainActivity extends AppCompatActivity {
             began = false;
             bantumiVM.clear();
 
+            Chronometer chronometer = findViewById(R.id.chronometer);
+            chronometer.stop();
+            chronometer.setBase(SystemClock.elapsedRealtime());
+            chronometer.start();
+
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             int numInicialSemillas = Integer.parseInt(sharedPreferences.getString("initial_number_of_seeds", "4"));
 
@@ -326,6 +343,8 @@ public class MainActivity extends AppCompatActivity {
      * El juego ha terminado. Volver a jugar?
      */
     private void finJuego() {
+        Chronometer chronometer = findViewById(R.id.chronometer);
+        chronometer.stop();
         String texto = (juegoBantumi.getSemillas(6) > 6 * numInicialSemillas)
                 ? "Gana Jugador 1"
                 : "Gana Jugador 2";
@@ -337,6 +356,10 @@ public class MainActivity extends AppCompatActivity {
         guardarPuntuacion();
 
         // terminar
-        new FinalAlertDialog(texto).show(getSupportFragmentManager(), "ALERT_DIALOG");
+        new FinalAlertDialog(texto, () -> {
+            // Reset the chronometer for the next game
+            chronometer.setBase(SystemClock.elapsedRealtime());
+            chronometer.start();
+        }).show(getSupportFragmentManager(), "ALERT_DIALOG");
     }
 }

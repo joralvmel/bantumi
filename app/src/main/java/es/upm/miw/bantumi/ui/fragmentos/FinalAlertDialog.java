@@ -1,6 +1,5 @@
 package es.upm.miw.bantumi.ui.fragmentos;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,15 +14,17 @@ import es.upm.miw.bantumi.ui.actividades.MainActivity;
 public class FinalAlertDialog extends DialogFragment {
 
     private final String tituloAlertDialog;
+    private final Runnable onConfirm;
 
-    public FinalAlertDialog(String tituloAlertDialog) {
+    public FinalAlertDialog(String tituloAlertDialog, Runnable onConfirm) {
         this.tituloAlertDialog = tituloAlertDialog;
+        this.onConfirm = onConfirm;
     }
 
     @NonNull
     @Override
-	public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
-		final MainActivity main = (MainActivity) requireActivity();
+    public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
+        final MainActivity main = (MainActivity) requireActivity();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(main);
         builder
@@ -31,23 +32,18 @@ public class FinalAlertDialog extends DialogFragment {
                 .setMessage(R.string.txtDialogoFinalPregunta)
                 .setPositiveButton(
                         getString(android.R.string.ok),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                main.juegoBantumi.inicializar(JuegoBantumi.Turno.turnoJ1);
+                        (dialog, which) -> {
+                            main.juegoBantumi.inicializar(JuegoBantumi.Turno.turnoJ1);
+                            if (onConfirm != null) {
+                                onConfirm.run();
                             }
                         }
                 )
                 .setNegativeButton(
                         getString(android.R.string.cancel),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                main.finish();
-                            }
-                        }
+                        (dialog, which) -> main.finish()
                 );
 
-		return builder.create();
-	}
+        return builder.create();
+    }
 }
