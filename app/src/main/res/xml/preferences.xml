@@ -18,6 +18,14 @@
             android:summary="Cambia el numero de semillas en cada hueco"
             android:inputType="number"
             android:defaultValue="4" />
+
+        <SwitchPreferenceCompat
+            android:key="starting_player"
+            android:title="Jugador Inicial"
+            android:summary="Cambio de jugador inicial J1/J2"
+            android:defaultValue="false"
+            android:switchTextOn="Player 2"
+            android:switchTextOff="Player 1" />
     </PreferenceCategory>
 
     <PreferenceCategory

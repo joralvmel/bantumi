@@ -76,10 +76,19 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         int numInicialSemillas = Integer.parseInt(sharedPreferences.getString("initial_number_of_seeds", "4"));
 
+        // Leer la preferencia del jugador inicial
+        boolean isPlayer2Starting = sharedPreferences.getBoolean("starting_player", false);
+        JuegoBantumi.Turno startingTurn = isPlayer2Starting ? JuegoBantumi.Turno.turnoJ2 : JuegoBantumi.Turno.turnoJ1;
+
         // Instancia el ViewModel y el juego, y asigna observadores a los huecos
         bantumiVM = new ViewModelProvider(this).get(BantumiViewModel.class);
-        juegoBantumi = new JuegoBantumi(bantumiVM, JuegoBantumi.Turno.turnoJ1, numInicialSemillas);
+        juegoBantumi = new JuegoBantumi(bantumiVM, startingTurn, numInicialSemillas);
         crearObservadores();
+
+        // Juega el computador si empieza
+        if (startingTurn == JuegoBantumi.Turno.turnoJ2) {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> juegoBantumi.juegaComputador(), 500);
+        }
     }
 
     /**
@@ -215,8 +224,17 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             int numInicialSemillas = Integer.parseInt(sharedPreferences.getString("initial_number_of_seeds", "4"));
 
-            juegoBantumi.clear(JuegoBantumi.Turno.turnoJ1, numInicialSemillas);
+            // Leer la preferencia del jugador inicial
+            boolean isPlayer2Starting = sharedPreferences.getBoolean("starting_player", false);
+            JuegoBantumi.Turno startingTurn = isPlayer2Starting ? JuegoBantumi.Turno.turnoJ2 : JuegoBantumi.Turno.turnoJ1;
+
+            juegoBantumi.clear(startingTurn, numInicialSemillas);
             crearObservadores();
+
+            // Juega el computador si empieza
+            if (startingTurn == JuegoBantumi.Turno.turnoJ2) {
+                new Handler(Looper.getMainLooper()).postDelayed(() -> juegoBantumi.juegaComputador(), 500);
+            }
         };
         if (changed) {
             new ConfirmationAlertDialog(
@@ -369,9 +387,18 @@ public class MainActivity extends AppCompatActivity {
 
         // Terminar
         new FinalAlertDialog(texto, () -> {
-            // Reset the chronometer for the next game
             chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.start();
+
+            // Leer la preferencia del jugador inicial
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean isPlayer2Starting = sharedPreferences.getBoolean("starting_player", false);
+            JuegoBantumi.Turno startingTurn = isPlayer2Starting ? JuegoBantumi.Turno.turnoJ2 : JuegoBantumi.Turno.turnoJ1;
+
+            // Juega el computador si empieza
+            if (startingTurn == JuegoBantumi.Turno.turnoJ2) {
+                new Handler(Looper.getMainLooper()).postDelayed(() -> juegoBantumi.juegaComputador(), 500);
+            }
         }).show(getSupportFragmentManager(), "ALERT_DIALOG");
     }
 }
